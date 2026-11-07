@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Установщик WinIsland.
+    .NET Framework 4.7.2 встроен в любую Windows 10 (1809+) и 11, поэтому установщик запускается сразу,
+    а нужный приложению .NET 10 Desktop Runtime докачивает сам, если его нет.
+
+    Сборка (из корня проекта):  build-installer.cmd
+    или:  dotnet publish Setup\WinIslandSetup.csproj -c Release -o dist
+    Результат: dist\WinIsland-Setup.exe
+  -->
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net472</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AssemblyName>WinIsland-Setup</AssemblyName>
+    <RootNamespace>WinIslandSetup</RootNamespace>
+    <ApplicationIcon>..\Assets\WinIsland.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DebugType>none</DebugType>
+    <GenerateSupportedRuntime>false</GenerateSupportedRuntime>
+    <Product>WinIsland</Product>
+    <AssemblyTitle>Установка WinIsland</AssemblyTitle>
+    <Description>Установка WinIsland</Description>
+
+    <AppProject>$(MSBuildProjectDirectory)\..\WinIsland.csproj</AppProject>
+    <AppPublishDir>$(MSBuildProjectDirectory)\obj\app</AppPublishDir>
+    <PayloadZip>$(MSBuildProjectDirectory)\obj\payload.zip</PayloadZip>
+    <DotnetExe Condition="'$(DOTNET_HOST_PATH)' != ''">$(DOTNET_HOST_PATH)</DotnetExe>
+    <DotnetExe Condition="'$(DotnetExe)' == ''">dotnet</DotnetExe>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System.IO.Compression" />
+  </ItemGroup>
+
+  <!-- версия установщика = версия приложения (одна правка в WinIsland.csproj) -->
+  <Target Name="TakeAppVersion" BeforeTargets="GetAssemblyVersion">
+    <XmlPeek XmlInputPath="$(AppProject)" Query="/Project/PropertyGroup/Version/text()">
+      <Output TaskParameter="Result" PropertyName="Version" />
+    </XmlPeek>
+  </Target>
+
+  <!-- собрать WinIsland, упаковать в zip и вшить в установщик -->
+  <Target Name="BuildPayload" BeforeTargets="PrepareForBuild" Condition="'$(DesignTimeBuild)' != 'true'">
+    <RemoveDir Directories="$(AppPublishDir)" />
+    <Exec Command="&quot;$(DotnetExe)&quot; publish &quot;$(AppProject)&quot; -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true -p:DebugType=none -o &quot;$(AppPublishDir)&quot; -nologo" />
+    <ZipDirectory SourceDirectory="$(AppPublishDir)" DestinationFile="$(PayloadZip)" Overwrite="true" />
+    <ItemGroup>
+      <EmbeddedResource Include="$(PayloadZip)" LogicalName="payload.zip" />
+    </ItemGroup>
+  </Target>
+
+</Project>

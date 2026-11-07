@@ -1,0 +1,369 @@
+<Window x:Class="WinIsland.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:c="clr-namespace:WinIsland.Controls"
+        Title="WinIsland" Width="480" Height="400"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        ResizeMode="NoResize" Topmost="True" ShowInTaskbar="False" ShowActivated="False"
+        Focusable="False" UseLayoutRounding="True" SnapsToDevicePixels="True"
+        FontFamily="Segoe UI Variable Text, Segoe UI" Foreground="{DynamicResource Fg}"
+        SourceInitialized="OnSourceInitialized" Loaded="OnLoaded">
+
+    <Window.Resources>
+        <FontFamily x:Key="Icons">Segoe Fluent Icons, Segoe MDL2 Assets</FontFamily>
+        <!-- цвета (Fg, Secondary, IslandBg, ArtPlaceholder…) задаёт Theme.cs — тёмная или светлая тема -->
+
+        <Style x:Key="ArtGlyph" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource Icons}"/>
+            <Setter Property="Text" Value="&#xE8D6;"/>
+            <Setter Property="Foreground" Value="#FF8E8E93"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <!-- Прозрачная круглая кнопка (медиа) -->
+        <Style x:Key="MediaBtn" TargetType="Button">
+            <Setter Property="Foreground" Value="{DynamicResource Fg}"/>
+            <Setter Property="FontFamily" Value="{StaticResource Icons}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="c:Fx.Press" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid Background="Transparent">
+                            <Ellipse x:Name="Hl" Fill="{DynamicResource Fg}" Opacity="0"/>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Hl" Property="Opacity" Value="0.10"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.35"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <c:SpringEase x:Key="SpringBouncy" Damping="0.55" Stiffness="12"/>
+        <c:SpringEase x:Key="SpringSoft" Damping="0.85" Stiffness="10"/>
+        <CubicEase x:Key="EaseOut" EasingMode="EaseOut"/>
+
+        <!-- Кнопка в стиле iOS: только белая иконка, мягкий круг при наведении, «пружина» при нажатии -->
+        <Style x:Key="GlyphBtn" TargetType="Button">
+            <Setter Property="Foreground" Value="{DynamicResource Fg}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid Background="Transparent">
+                            <Ellipse x:Name="Hl" Fill="{DynamicResource Fg}" Opacity="0" RenderTransformOrigin="0.5,0.5">
+                                <Ellipse.RenderTransform>
+                                    <ScaleTransform ScaleX="0.6" ScaleY="0.6"/>
+                                </Ellipse.RenderTransform>
+                            </Ellipse>
+                            <ContentPresenter x:Name="Glyph" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                              RenderTransformOrigin="0.5,0.5">
+                                <ContentPresenter.RenderTransform>
+                                    <ScaleTransform/>
+                                </ContentPresenter.RenderTransform>
+                            </ContentPresenter>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="Hl" Storyboard.TargetProperty="Opacity"
+                                                             To="0.10" Duration="0:0:0.22" EasingFunction="{StaticResource EaseOut}"/>
+                                            <DoubleAnimation Storyboard.TargetName="Hl" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                             To="1" Duration="0:0:0.5" EasingFunction="{StaticResource SpringBouncy}"/>
+                                            <DoubleAnimation Storyboard.TargetName="Hl" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                             To="1" Duration="0:0:0.5" EasingFunction="{StaticResource SpringBouncy}"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="Hl" Storyboard.TargetProperty="Opacity"
+                                                             To="0" Duration="0:0:0.28" EasingFunction="{StaticResource EaseOut}"/>
+                                            <DoubleAnimation Storyboard.TargetName="Hl" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                             To="0.6" Duration="0:0:0.3" EasingFunction="{StaticResource EaseOut}"/>
+                                            <DoubleAnimation Storyboard.TargetName="Hl" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                             To="0.6" Duration="0:0:0.3" EasingFunction="{StaticResource EaseOut}"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="Hl" Storyboard.TargetProperty="Opacity"
+                                                             To="0.22" Duration="0:0:0.08"/>
+                                            <DoubleAnimation Storyboard.TargetName="Hl" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                             To="1.08" Duration="0:0:0.25" EasingFunction="{StaticResource EaseOut}"/>
+                                            <DoubleAnimation Storyboard.TargetName="Hl" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                             To="1.08" Duration="0:0:0.25" EasingFunction="{StaticResource EaseOut}"/>
+                                            <DoubleAnimation Storyboard.TargetName="Glyph" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                             To="0.8" Duration="0:0:0.12" EasingFunction="{StaticResource EaseOut}"/>
+                                            <DoubleAnimation Storyboard.TargetName="Glyph" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                             To="0.8" Duration="0:0:0.12" EasingFunction="{StaticResource EaseOut}"/>
+                                            <DoubleAnimation Storyboard.TargetName="Glyph" Storyboard.TargetProperty="Opacity"
+                                                             To="0.7" Duration="0:0:0.12"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="Hl" Storyboard.TargetProperty="Opacity"
+                                                             To="0.10" Duration="0:0:0.35" EasingFunction="{StaticResource EaseOut}"/>
+                                            <DoubleAnimation Storyboard.TargetName="Hl" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                             To="1" Duration="0:0:0.45" EasingFunction="{StaticResource SpringSoft}"/>
+                                            <DoubleAnimation Storyboard.TargetName="Hl" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                             To="1" Duration="0:0:0.45" EasingFunction="{StaticResource SpringSoft}"/>
+                                            <DoubleAnimation Storyboard.TargetName="Glyph" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                             To="1" Duration="0:0:0.55" EasingFunction="{StaticResource SpringBouncy}"/>
+                                            <DoubleAnimation Storyboard.TargetName="Glyph" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                             To="1" Duration="0:0:0.55" EasingFunction="{StaticResource SpringBouncy}"/>
+                                            <DoubleAnimation Storyboard.TargetName="Glyph" Storyboard.TargetProperty="Opacity"
+                                                             To="1" Duration="0:0:0.25"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.35"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Круглый переключатель как в Пункте управления -->
+        <Style x:Key="RoundToggle" TargetType="Button" BasedOn="{StaticResource MediaBtn}">
+            <Setter Property="Width" Value="50"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="FontSize" Value="19"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Ellipse Fill="{TemplateBinding Background}"/>
+                            <Ellipse x:Name="Hl" Fill="{DynamicResource Fg}" Opacity="0"/>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Hl" Property="Opacity" Value="0.10"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid x:Name="Stage">
+
+        <!-- тонкая «ручка» вверху, пока остров спрятан -->
+        <Border x:Name="GhostHandle" Width="46" Height="5" CornerRadius="2.5" Margin="0,2,0,0"
+                HorizontalAlignment="Center" VerticalAlignment="Top" IsHitTestVisible="False" Opacity="0"
+                Background="{DynamicResource HandleBg}" BorderBrush="{DynamicResource HandleStroke}" BorderThickness="0.8"/>
+
+        <Grid x:Name="Floater">
+        <Grid.RenderTransform>
+            <TranslateTransform x:Name="FloatShift"/>
+        </Grid.RenderTransform>
+
+        <!-- мягкая тень (видна только в раскрытом виде) -->
+        <Border x:Name="IslandShadow" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,6,0,0"
+                Width="{Binding ActualWidth, ElementName=Island}"
+                Height="{Binding ActualHeight, ElementName=Island}"
+                CornerRadius="{Binding CornerRadius, ElementName=Island}"
+                Background="Black" Opacity="0" IsHitTestVisible="False">
+            <Border.Effect>
+                <DropShadowEffect x:Name="ShadowFx" BlurRadius="32" ShadowDepth="10" Direction="270" Opacity="0.55"
+                                  Color="Black" RenderingBias="Performance"/>
+            </Border.Effect>
+        </Border>
+
+        <!-- ОСТРОВ -->
+        <Border x:Name="Island" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,6,0,0"
+                Width="124" Height="32" CornerRadius="16" Background="{DynamicResource IslandBg}" Cursor="Hand"
+                SizeChanged="Island_SizeChanged"
+                MouseEnter="Island_MouseEnter" MouseLeave="Island_MouseLeave"
+                MouseLeftButtonUp="Island_Click" MouseRightButtonUp="Island_RightClick"
+                MouseWheel="Island_Wheel">
+            <Grid>
+                <Border x:Name="Glow" Opacity="0" IsHitTestVisible="False"/>
+
+                <!-- 1. Компактный: играет музыка -->
+                <Grid x:Name="CompactLayer" Height="36" VerticalAlignment="Top">
+                    <Border x:Name="CompactArt" Width="26" Height="26" CornerRadius="8"
+                            HorizontalAlignment="Left" Margin="5,0,0,0">
+                        <TextBlock x:Name="CompactArtGlyph" Style="{StaticResource ArtGlyph}" FontSize="12"/>
+                    </Border>
+
+                    <!-- мини-управление в стиле iOS: ⏮  ⏯  ⏭ -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button x:Name="MiniPrevBtn" Style="{StaticResource GlyphBtn}" Width="32" Height="32" Click="Prev_Click">
+                            <Path Data="M11,0 L0,7 L11,14 Z M22,0 L11,7 L22,14 Z" Fill="{DynamicResource Fg}" Stroke="{DynamicResource Fg}"
+                                  StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="19" Height="12"/>
+                        </Button>
+                        <Button x:Name="MiniPlayBtn" Style="{StaticResource GlyphBtn}" Width="32" Height="32" Margin="6,0" Click="Play_Click">
+                            <Grid Width="18" Height="18" RenderTransformOrigin="0.5,0.5">
+                                <Grid.RenderTransform>
+                                    <ScaleTransform x:Name="MiniGlyphScale"/>
+                                </Grid.RenderTransform>
+                                <Path x:Name="MiniPlayIcon" Data="M0,0 L12,7 L0,14 Z" Fill="{DynamicResource Fg}" Stroke="{DynamicResource Fg}"
+                                      StrokeThickness="2" StrokeLineJoin="Round" Stretch="Uniform"
+                                      Width="14" Height="16" Margin="3,0,0,0"/>
+                                <StackPanel x:Name="MiniPauseIcon" Orientation="Horizontal" Visibility="Collapsed"
+                                            HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Rectangle Width="5" Height="16" RadiusX="1.8" RadiusY="1.8" Fill="{DynamicResource Fg}"/>
+                                    <Rectangle Width="5" Height="16" RadiusX="1.8" RadiusY="1.8" Fill="{DynamicResource Fg}" Margin="4,0,0,0"/>
+                                </StackPanel>
+                            </Grid>
+                        </Button>
+                        <Button x:Name="MiniNextBtn" Style="{StaticResource GlyphBtn}" Width="32" Height="32" Click="Next_Click">
+                            <Path Data="M0,0 L11,7 L0,14 Z M11,0 L22,7 L11,14 Z" Fill="{DynamicResource Fg}" Stroke="{DynamicResource Fg}"
+                                  StrokeThickness="1.6" StrokeLineJoin="Round" Stretch="Uniform" Width="19" Height="12"/>
+                        </Button>
+                    </StackPanel>
+
+                    <c:Equalizer x:Name="CompactEq" HorizontalAlignment="Right" Margin="0,0,14,0" BarHeight="14"/>
+                </Grid>
+
+                <!-- 2. HUD громкости -->
+                <Grid x:Name="HudLayer" Height="32" VerticalAlignment="Top">
+                    <TextBlock x:Name="HudIcon" FontFamily="{StaticResource Icons}" FontSize="15" Text="&#xE767;"
+                               HorizontalAlignment="Left" VerticalAlignment="Center" Margin="13,0,0,0"/>
+                    <Grid Width="170" Height="5" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40,0,0,0">
+                        <Border Background="{DynamicResource HudTrack}" CornerRadius="2.5"/>
+                        <Border x:Name="HudFill" Background="{DynamicResource Fg}" CornerRadius="2.5" HorizontalAlignment="Left" Width="0"/>
+                    </Grid>
+                    <TextBlock x:Name="HudText" FontSize="12.5" FontWeight="SemiBold" Text="0%"
+                               HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,14,0"/>
+                </Grid>
+
+                <!-- 3. Баннер «Сейчас играет» при смене трека -->
+                <Grid x:Name="BannerLayer" Height="80" VerticalAlignment="Top">
+                    <Border x:Name="BannerArt" Width="52" Height="52" CornerRadius="13"
+                            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="14,14,0,0">
+                        <TextBlock x:Name="BannerArtGlyph" Style="{StaticResource ArtGlyph}" FontSize="20"/>
+                    </Border>
+                    <StackPanel Margin="78,26,58,0" VerticalAlignment="Top">
+                        <TextBlock x:Name="BannerTitle" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                        <TextBlock x:Name="BannerArtist" FontSize="12" Foreground="{DynamicResource Secondary}"
+                                   TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
+                    </StackPanel>
+                    <c:Equalizer x:Name="BannerEq" HorizontalAlignment="Right" VerticalAlignment="Top"
+                                 Margin="0,32,22,0" BarHeight="18"/>
+                </Grid>
+
+                <!-- 4. Полностью раскрытый -->
+                <StackPanel x:Name="ExpandedLayer" Width="400" HorizontalAlignment="Center" VerticalAlignment="Top">
+
+                    <Grid Height="34" Margin="22,0,22,0">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,4,0,0">
+                            <Ellipse x:Name="SourceDot" Width="7" Height="7" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="SourceText" Text="Медиа" FontSize="12" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource Secondary}" Margin="7,0,0,0" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <c:Equalizer x:Name="ExpandedEq" HorizontalAlignment="Right" Margin="0,4,0,0" BarHeight="14"/>
+                    </Grid>
+
+                    <Grid Margin="18,6,18,0" Height="66">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="66"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="ExpandedArt" CornerRadius="15">
+                            <TextBlock x:Name="ExpandedArtGlyph" Style="{StaticResource ArtGlyph}" FontSize="24"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                            <TextBlock x:Name="ExpTitle" FontSize="17" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                            <TextBlock x:Name="ExpArtist" FontSize="13.5" Foreground="{DynamicResource Secondary}"
+                                       TextTrimming="CharacterEllipsis" Margin="0,3,0,0"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid x:Name="ProgressRow" Margin="18,14,18,0" Height="20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="44"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="44"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock x:Name="PosText" Text="0:00" FontSize="11" Foreground="{DynamicResource Secondary}"
+                                   VerticalAlignment="Center"/>
+                        <Grid x:Name="SeekArea" Grid.Column="1" Background="Transparent" Cursor="Hand"
+                              MouseLeftButtonDown="Seek_Down" MouseMove="Seek_Move" MouseLeftButtonUp="Seek_Up"
+                              LostMouseCapture="Seek_Lost" MouseEnter="Seek_Enter" MouseLeave="Seek_Leave">
+                            <Border x:Name="SeekTrack" Height="5" CornerRadius="3" Background="{DynamicResource SeekTrack}" VerticalAlignment="Center"/>
+                            <Border x:Name="SeekFill" Height="5" CornerRadius="3" Background="{DynamicResource SeekFill}"
+                                    HorizontalAlignment="Left" VerticalAlignment="Center" Width="0"/>
+                        </Grid>
+                        <TextBlock x:Name="DurText" Grid.Column="2" Text="-0:00" FontSize="11"
+                                   Foreground="{DynamicResource Secondary}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,6,0,0">
+                        <Button x:Name="PrevBtn" Style="{StaticResource GlyphBtn}" Width="56" Height="56" Click="Prev_Click">
+                            <Path Data="M11,0 L0,7 L11,14 Z M22,0 L11,7 L22,14 Z" Fill="{DynamicResource Fg}" Stroke="{DynamicResource Fg}" StrokeThickness="2"
+                                  StrokeLineJoin="Round" Stretch="Uniform" Width="30" Height="19"/>
+                        </Button>
+                        <Button x:Name="PlayBtn" Style="{StaticResource GlyphBtn}" Width="64" Height="64" Margin="18,0" Click="Play_Click">
+                            <Grid Width="30" Height="30" RenderTransformOrigin="0.5,0.5">
+                                <Grid.RenderTransform>
+                                    <ScaleTransform x:Name="PlayGlyphScale"/>
+                                </Grid.RenderTransform>
+                                <Path x:Name="PlayIcon" Data="M0,0 L12,7 L0,14 Z" Fill="{DynamicResource Fg}" Stroke="{DynamicResource Fg}" StrokeThickness="2.6"
+                                      StrokeLineJoin="Round" Stretch="Uniform" Width="23" Height="26" Margin="5,0,0,0"/>
+                                <StackPanel x:Name="PauseIcon" Orientation="Horizontal" Visibility="Collapsed"
+                                            HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Rectangle Width="8" Height="26" RadiusX="2.6" RadiusY="2.6" Fill="{DynamicResource Fg}"/>
+                                    <Rectangle Width="8" Height="26" RadiusX="2.6" RadiusY="2.6" Fill="{DynamicResource Fg}" Margin="6,0,0,0"/>
+                                </StackPanel>
+                            </Grid>
+                        </Button>
+                        <Button x:Name="NextBtn" Style="{StaticResource GlyphBtn}" Width="56" Height="56" Click="Next_Click">
+                            <Path Data="M0,0 L11,7 L0,14 Z M11,0 L22,7 L11,14 Z" Fill="{DynamicResource Fg}" Stroke="{DynamicResource Fg}" StrokeThickness="2"
+                                  StrokeLineJoin="Round" Stretch="Uniform" Width="30" Height="19"/>
+                        </Button>
+                    </StackPanel>
+
+                    <Grid Margin="18,10,18,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <c:PillSlider x:Name="BrightSlider" Glyph="&#xE706;" ToolTip="Яркость"/>
+                        <c:PillSlider x:Name="VolSlider" Grid.Column="2" Glyph="&#xE767;" ToolTip="Громкость"/>
+                    </Grid>
+
+                    <UniformGrid Columns="5" Margin="14,14,14,18">
+                        <Button x:Name="WifiBtn" Style="{StaticResource RoundToggle}" Content="&#xE701;" ToolTip="Wi-Fi" Click="Wifi_Click"/>
+                        <Button x:Name="BtBtn" Style="{StaticResource RoundToggle}" Content="&#xE702;" ToolTip="Bluetooth" Click="Bt_Click"/>
+                        <Button x:Name="AirBtn" Style="{StaticResource RoundToggle}" Content="&#xE709;" ToolTip="Режим «в самолёте»" Click="Air_Click"/>
+                        <Button x:Name="MuteBtn" Style="{StaticResource RoundToggle}" Content="&#xE767;" ToolTip="Без звука" Click="Mute_Click"/>
+                        <Button x:Name="SnipBtn" Style="{StaticResource RoundToggle}" Content="&#xE722;" ToolTip="Скриншот" Click="Snip_Click"/>
+                    </UniformGrid>
+                </StackPanel>
+
+                <!-- обводка: в светлой теме отделяет белый остров от светлых окон -->
+                <Border BorderBrush="{DynamicResource IslandStroke}" BorderThickness="1" IsHitTestVisible="False"
+                        CornerRadius="{Binding CornerRadius, ElementName=Island}"/>
+            </Grid>
+        </Border>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,52 @@
+C:\Users\shakh\Desktop\applewejetforwin\bin\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.exe
+C:\Users\shakh\Desktop\applewejetforwin\bin\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.deps.json
+C:\Users\shakh\Desktop\applewejetforwin\bin\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.runtimeconfig.json
+C:\Users\shakh\Desktop\applewejetforwin\bin\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.dll
+C:\Users\shakh\Desktop\applewejetforwin\bin\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.pdb
+C:\Users\shakh\Desktop\applewejetforwin\bin\Release\net10.0-windows10.0.19041.0\win-x64\System.Management.dll
+C:\Users\shakh\Desktop\applewejetforwin\bin\Release\net10.0-windows10.0.19041.0\win-x64\Microsoft.Windows.SDK.NET.dll
+C:\Users\shakh\Desktop\applewejetforwin\bin\Release\net10.0-windows10.0.19041.0\win-x64\WinRT.Runtime.dll
+C:\Users\shakh\Desktop\applewejetforwin\obj\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.csproj.AssemblyReference.cache
+C:\Users\shakh\Desktop\applewejetforwin\obj\Release\net10.0-windows10.0.19041.0\win-x64\App.baml
+C:\Users\shakh\Desktop\applewejetforwin\obj\Release\net10.0-windows10.0.19041.0\win-x64\MainWindow.g.cs
+C:\Users\shakh\Desktop\applewejetforwin\obj\Release\net10.0-windows10.0.19041.0\win-x64\App.g.cs
+C:\Users\shakh\Desktop\applewejetforwin\obj\Release\net10.0-windows10.0.19041.0\win-x64\GeneratedInternalTypeHelper.g.cs
+C:\Users\shakh\Desktop\applewejetforwin\obj\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland_MarkupCompile.cache
+C:\Users\shakh\Desktop\applewejetforwin\obj\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland_MarkupCompile.lref
+C:\Users\shakh\Desktop\applewejetforwin\obj\Release\net10.0-windows10.0.19041.0\win-x64\MainWindow.baml
+C:\Users\shakh\Desktop\applewejetforwin\obj\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.g.resources
+C:\Users\shakh\Desktop\applewejetforwin\obj\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\shakh\Desktop\applewejetforwin\obj\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.AssemblyInfoInputs.cache
+C:\Users\shakh\Desktop\applewejetforwin\obj\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.AssemblyInfo.cs
+C:\Users\shakh\Desktop\applewejetforwin\obj\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.csproj.CoreCompileInputs.cache
+C:\Users\shakh\Desktop\applewejetforwin\obj\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.csproj.Up2Date
+C:\Users\shakh\Desktop\applewejetforwin\obj\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.dll
+C:\Users\shakh\Desktop\applewejetforwin\obj\Release\net10.0-windows10.0.19041.0\win-x64\refint\WinIsland.dll
+C:\Users\shakh\Desktop\applewejetforwin\obj\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.pdb
+C:\Users\shakh\Desktop\applewejetforwin\obj\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.genruntimeconfig.cache
+C:\Users\shakh\Desktop\applewejetforwin\obj\Release\net10.0-windows10.0.19041.0\win-x64\ref\WinIsland.dll
+C:\Users\shakh\Desktop\Widget Apple for Windows\bin\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.exe
+C:\Users\shakh\Desktop\Widget Apple for Windows\bin\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.deps.json
+C:\Users\shakh\Desktop\Widget Apple for Windows\bin\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.runtimeconfig.json
+C:\Users\shakh\Desktop\Widget Apple for Windows\bin\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.dll
+C:\Users\shakh\Desktop\Widget Apple for Windows\bin\Release\net10.0-windows10.0.19041.0\win-x64\System.Management.dll
+C:\Users\shakh\Desktop\Widget Apple for Windows\bin\Release\net10.0-windows10.0.19041.0\win-x64\Microsoft.Windows.SDK.NET.dll
+C:\Users\shakh\Desktop\Widget Apple for Windows\bin\Release\net10.0-windows10.0.19041.0\win-x64\WinRT.Runtime.dll
+C:\Users\shakh\Desktop\Widget Apple for Windows\obj\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.csproj.AssemblyReference.cache
+C:\Users\shakh\Desktop\Widget Apple for Windows\obj\Release\net10.0-windows10.0.19041.0\win-x64\App.baml
+C:\Users\shakh\Desktop\Widget Apple for Windows\obj\Release\net10.0-windows10.0.19041.0\win-x64\MainWindow.g.cs
+C:\Users\shakh\Desktop\Widget Apple for Windows\obj\Release\net10.0-windows10.0.19041.0\win-x64\App.g.cs
+C:\Users\shakh\Desktop\Widget Apple for Windows\obj\Release\net10.0-windows10.0.19041.0\win-x64\GeneratedInternalTypeHelper.g.cs
+C:\Users\shakh\Desktop\Widget Apple for Windows\obj\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland_MarkupCompile.cache
+C:\Users\shakh\Desktop\Widget Apple for Windows\obj\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland_MarkupCompile.lref
+C:\Users\shakh\Desktop\Widget Apple for Windows\obj\Release\net10.0-windows10.0.19041.0\win-x64\MainWindow.baml
+C:\Users\shakh\Desktop\Widget Apple for Windows\obj\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.g.resources
+C:\Users\shakh\Desktop\Widget Apple for Windows\obj\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\shakh\Desktop\Widget Apple for Windows\obj\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.AssemblyInfoInputs.cache
+C:\Users\shakh\Desktop\Widget Apple for Windows\obj\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.AssemblyInfo.cs
+C:\Users\shakh\Desktop\Widget Apple for Windows\obj\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.csproj.CoreCompileInputs.cache
+C:\Users\shakh\Desktop\Widget Apple for Windows\obj\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.csproj.Up2Date
+C:\Users\shakh\Desktop\Widget Apple for Windows\obj\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.dll
+C:\Users\shakh\Desktop\Widget Apple for Windows\obj\Release\net10.0-windows10.0.19041.0\win-x64\refint\WinIsland.dll
+C:\Users\shakh\Desktop\Widget Apple for Windows\obj\Release\net10.0-windows10.0.19041.0\win-x64\WinIsland.genruntimeconfig.cache
+C:\Users\shakh\Desktop\Widget Apple for Windows\obj\Release\net10.0-windows10.0.19041.0\win-x64\ref\WinIsland.dll
