@@ -11,8 +11,14 @@
     <LangVersion>latest</LangVersion>
     <AssemblyName>WinIsland</AssemblyName>
     <RootNamespace>WinIsland</RootNamespace>
-    <Version>1.0.0</Version>
+    <Version>1.1.0</Version>
+    <!-- без хвоста «+хеш коммита» в версии продукта -->
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
     <Product>WinIsland</Product>
+    <!-- создатель: виден в свойствах файла и в колонке «Издатель» Диспетчера задач -->
+    <Company>Bibon</Company>
+    <Authors>Bibon</Authors>
+    <Copyright>© 2026 Bibon</Copyright>
     <ApplicationIcon>Assets\WinIsland.ico</ApplicationIcon>
     <!-- установщик — отдельный проект в Setup\, его файлы сюда не входят -->
     <DefaultItemExcludes>$(DefaultItemExcludes);Setup\**;publish\**;dist\**</DefaultItemExcludes>

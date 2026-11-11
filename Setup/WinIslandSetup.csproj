@@ -26,6 +26,11 @@
     <DebugType>none</DebugType>
     <GenerateSupportedRuntime>false</GenerateSupportedRuntime>
     <Product>WinIsland</Product>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    <!-- создатель: отсюда же установщик берёт «Издателя» для списка установленных программ -->
+    <Company>Bibon</Company>
+    <Authors>Bibon</Authors>
+    <Copyright>© 2026 Bibon</Copyright>
     <AssemblyTitle>Установка WinIsland</AssemblyTitle>
     <Description>Установка WinIsland</Description>
 

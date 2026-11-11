@@ -8,19 +8,24 @@
     "net472": []
   },
   "packageFolders": {
-    "C:\\Users\\shakh\\.nuget\\packages\\": {}
+    "C:\\Users\\Abeken_A\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\shakh\\Desktop\\Widget Apple for Windows\\Setup\\WinIslandSetup.csproj",
+      "projectUniqueName": "C:\\Users\\Abeken_A\\Desktop\\Code\\Widget-Apple-for-Windows\\Setup\\WinIslandSetup.csproj",
       "projectName": "WinIsland-Setup",
-      "projectPath": "C:\\Users\\shakh\\Desktop\\Widget Apple for Windows\\Setup\\WinIslandSetup.csproj",
-      "packagesPath": "C:\\Users\\shakh\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\shakh\\Desktop\\Widget Apple for Windows\\Setup\\obj\\",
+      "projectPath": "C:\\Users\\Abeken_A\\Desktop\\Code\\Widget-Apple-for-Windows\\Setup\\WinIslandSetup.csproj",
+      "packagesPath": "C:\\Users\\Abeken_A\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Abeken_A\\Desktop\\Code\\Widget-Apple-for-Windows\\Setup\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\shakh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Abeken_A\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -47,13 +52,13 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "10.0.400"
+      "SdkAnalysisLevel": "10.0.300"
     },
     "frameworks": {
       "net472": {
         "framework": "net472",
         "targetAlias": "net472",
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.303\\RuntimeIdentifierGraph.json"
       }
     }
   }

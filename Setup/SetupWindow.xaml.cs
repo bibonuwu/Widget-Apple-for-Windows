@@ -58,6 +58,10 @@ namespace WinIslandSetup
                 if (_donePending) ApplyDone(); // закрыли крестиком — выбор всё равно применяем
             };
 
+            // автозапуск пишется в реестр сразу при переключении, а не только по кнопке «Готово»
+            AutostartSwitch.Checked += (_, _) => ApplyAutostart();
+            AutostartSwitch.Unchecked += (_, _) => ApplyAutostart();
+
             if (snapshotDir != null)
             {
                 WindowStartupLocation = WindowStartupLocation.Manual;
@@ -204,6 +208,7 @@ namespace WinIslandSetup
 
                 SetBusy(false);
                 _donePending = true;
+                ApplyAutostart(); // сразу, как только файлы на месте: запись не зависит от того, как закроют окно
                 ShowPage(PageDone);
             }
             catch (Exception ex)
@@ -215,12 +220,18 @@ namespace WinIslandSetup
 
         void Done_Click(object sender, RoutedEventArgs e) => Close(); // выбор применится в Closing
 
-        /// <summary>Применить выбор с последнего экрана: автозагрузка и запуск.</summary>
+        /// <summary>Записать в реестр текущее положение переключателя автозапуска (только после установки).</summary>
+        void ApplyAutostart()
+        {
+            if (!_donePending || _snapshotDir != null) return;
+            try { Installer.SetAutostart(AutostartSwitch.IsChecked == true); }
+            catch (Exception ex) { MessageBox.Show(this, "Не удалось настроить автозапуск: " + ex.Message, "WinIsland"); }
+        }
+
+        /// <summary>Закрытие последнего экрана: запуск (автозапуск к этому моменту уже записан — см. ApplyAutostart).</summary>
         void ApplyDone()
         {
             _donePending = false;
-            try { Installer.SetAutostart(AutostartSwitch.IsChecked == true); }
-            catch (Exception ex) { MessageBox.Show("Не удалось настроить автозапуск: " + ex.Message, "WinIsland"); }
 
             if (LaunchSwitch.IsChecked == true)
             {

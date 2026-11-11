@@ -11,3 +11,16 @@ C:\Users\shakh\Desktop\Widget Apple for Windows\Setup\obj\Release\net472\WinIsla
 C:\Users\shakh\Desktop\Widget Apple for Windows\Setup\obj\Release\net472\WinIslandSetup.AssemblyInfo.cs
 C:\Users\shakh\Desktop\Widget Apple for Windows\Setup\obj\Release\net472\WinIslandSetup.csproj.CoreCompileInputs.cache
 C:\Users\shakh\Desktop\Widget Apple for Windows\Setup\obj\Release\net472\WinIsland-Setup.exe
+C:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\Setup\bin\Release\net472\WinIsland-Setup.exe
+C:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\Setup\obj\Release\net472\WinIslandSetup.csproj.AssemblyReference.cache
+C:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\Setup\obj\Release\net472\SetupWindow.baml
+C:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\Setup\obj\Release\net472\App.baml
+C:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\Setup\obj\Release\net472\SetupWindow.g.cs
+C:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\Setup\obj\Release\net472\App.g.cs
+C:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\Setup\obj\Release\net472\WinIsland-Setup_MarkupCompile.cache
+C:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\Setup\obj\Release\net472\WinIsland-Setup.g.resources
+C:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\Setup\obj\Release\net472\WinIslandSetup.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\Setup\obj\Release\net472\WinIslandSetup.AssemblyInfoInputs.cache
+C:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\Setup\obj\Release\net472\WinIslandSetup.AssemblyInfo.cs
+C:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\Setup\obj\Release\net472\WinIslandSetup.csproj.CoreCompileInputs.cache
+C:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\Setup\obj\Release\net472\WinIsland-Setup.exe

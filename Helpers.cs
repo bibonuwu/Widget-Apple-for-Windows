@@ -9,8 +9,13 @@ namespace WinIsland
     internal static class Autostart
     {
         const string RunKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
+        // сюда Windows пишет «отключено» из Диспетчера задач / Параметров: пока флаг стоит, запись в Run не запускается
+        const string ApprovedKey = @"Software\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run";
         const string Name = "WinIsland";
 
+        static string Command => $"\"{Environment.ProcessPath}\"";
+
+        /// <summary>Запись есть и Windows её не отключила — то есть программа реально запустится при входе.</summary>
         public static bool IsEnabled
         {
             get
@@ -18,7 +23,10 @@ namespace WinIsland
                 try
                 {
                     using var k = Registry.CurrentUser.OpenSubKey(RunKey);
-                    return k?.GetValue(Name) is string;
+                    if (!(k?.GetValue(Name) is string cmd) || cmd.Length == 0) return false;
+                    using var a = Registry.CurrentUser.OpenSubKey(ApprovedKey);
+                    // первый байт: чётный — включено, нечётный — отключено пользователем
+                    return !(a?.GetValue(Name) is byte[] flag && flag.Length > 0 && (flag[0] & 1) != 0);
                 }
                 catch { return false; }
             }
@@ -28,9 +36,29 @@ namespace WinIsland
         {
             try
             {
-                using var k = Registry.CurrentUser.CreateSubKey(RunKey);
-                if (on) k.SetValue(Name, $"\"{Environment.ProcessPath}\"");
-                else k.DeleteValue(Name, false);
+                using (var k = Registry.CurrentUser.CreateSubKey(RunKey))
+                {
+                    if (on) k.SetValue(Name, Command, RegistryValueKind.String);
+                    else k.DeleteValue(Name, false);
+                }
+                // снимаем «отключено», иначе запись в Run была бы, а запуска — нет
+                using var a = Registry.CurrentUser.OpenSubKey(ApprovedKey, true);
+                a?.DeleteValue(Name, false);
+            }
+            catch (Exception ex) { App.Log(ex); }
+        }
+
+        /// <summary>Автозапуск включён, но ведёт на файл, которого уже нет (программу перенесли) — переписываем на текущий путь.</summary>
+        public static void Repair()
+        {
+            try
+            {
+                using var k = Registry.CurrentUser.OpenSubKey(RunKey, true);
+                if (!(k?.GetValue(Name) is string cmd)) return;
+                cmd = cmd.Trim();
+                int end = cmd.StartsWith("\"") ? cmd.IndexOf('"', 1) : -1;
+                string path = end > 0 ? cmd.Substring(1, end - 1) : cmd;
+                if (!System.IO.File.Exists(path)) k.SetValue(Name, Command, RegistryValueKind.String);
             }
             catch (Exception ex) { App.Log(ex); }
         }

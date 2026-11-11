@@ -14,9 +14,13 @@ namespace WinIsland
     {
         /// <summary>Именованное событие: установщик/деинсталлятор просит запущенную копию закрыться.</summary>
         public const string ExitSignalName = @"Local\WinIsland.Exit";
+        /// <summary>Именованное событие: вторая копия просит уже запущенную показаться и сама закрывается.</summary>
+        const string ShowSignalName = @"Local\WinIsland.Show";
 
         Mutex _mutex;
-        EventWaitHandle _exitSignal;
+        bool _ownsMutex;
+        EventWaitHandle _exitSignal, _showSignal;
+        RegisteredWaitHandle _showWait;
         MainWindow _win;
         Forms.NotifyIcon _tray;
         ContextMenu _menu;
@@ -31,10 +35,12 @@ namespace WinIsland
             for (int i = 0; i < e.Args.Length - 1; i++)
                 if (e.Args[i] == "--snapshot") snapshotDir = e.Args[i + 1];
 
-            if (snapshotDir == null)
+            if (snapshotDir == null && !TakeSingleInstance())
             {
-                _mutex = new Mutex(true, @"Local\WinIsland.SingleInstance", out bool created);
-                if (!created) { Shutdown(); return; }
+                // уже работает (например, запущен автозагрузкой) — вторую копию не открываем, показываем первую
+                SignalRunningCopy();
+                Shutdown();
+                return;
             }
 
             DispatcherUnhandledException += (_, a) => { Log(a.Exception); a.Handled = true; };
@@ -42,7 +48,12 @@ namespace WinIsland
             TaskScheduler.UnobservedTaskException += (_, a) => { Log(a.Exception); a.SetObserved(); };
 
             Theme.Init();
-            if (snapshotDir == null) ListenForExitSignal();
+            if (snapshotDir == null)
+            {
+                ListenForExitSignal();
+                ListenForShowSignal();
+                Autostart.Repair();
+            }
 
             _win = new MainWindow(snapshotDir);
             _win.Show();
@@ -126,6 +137,38 @@ namespace WinIsland
             _win.Peek(); // остров выезжает на пару секунд — видно новую тему
         }
 
+        /// <summary>true — мы единственная копия в этом сеансе пользователя.</summary>
+        bool TakeSingleInstance()
+        {
+            try
+            {
+                _mutex = new Mutex(true, @"Local\WinIsland.SingleInstance", out _ownsMutex);
+                return _ownsMutex;
+            }
+            catch (UnauthorizedAccessException) { return false; } // первая копия запущена с другими правами
+        }
+
+        static void SignalRunningCopy()
+        {
+            try
+            {
+                if (EventWaitHandle.TryOpenExisting(ShowSignalName, out var ev))
+                    using (ev) ev.Set();
+            }
+            catch { }
+        }
+
+        void ListenForShowSignal()
+        {
+            try
+            {
+                _showSignal = new EventWaitHandle(false, EventResetMode.AutoReset, ShowSignalName);
+                _showWait = ThreadPool.RegisterWaitForSingleObject(_showSignal,
+                    (_, _) => Dispatcher.BeginInvoke(new Action(() => _win?.TrayActivate())), null, Timeout.Infinite, false);
+            }
+            catch (Exception ex) { Log(ex); }
+        }
+
         void ListenForExitSignal()
         {
             try
@@ -144,9 +187,11 @@ namespace WinIsland
             {
                 if (_tray != null) { _tray.Visible = false; _tray.Dispose(); }
                 _win?.Cleanup();
-                _mutex?.ReleaseMutex();
-                _mutex?.Dispose();
+                _showWait?.Unregister(null);
+                _showSignal?.Dispose();
                 _exitSignal?.Dispose();
+                if (_ownsMutex) _mutex.ReleaseMutex(); // вторая копия мьютексом не владеет — отпускать нечего
+                _mutex?.Dispose();
             }
             catch { }
             base.OnExit(e);

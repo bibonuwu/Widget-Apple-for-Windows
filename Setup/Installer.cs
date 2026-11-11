@@ -23,6 +23,8 @@ namespace WinIslandSetup
 
         const string UninstallKey = @"Software\Microsoft\Windows\CurrentVersion\Uninstall\WinIsland";
         const string RunKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
+        // сюда Windows пишет «отключено» из Диспетчера задач / Параметров: пока флаг стоит, запись в Run не запускается
+        const string ApprovedKey = @"Software\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run";
         const string SettingsKey = @"Software\WinIsland";
 
         // приложению нужен .NET Desktop Runtime этой версии (как в WinIsland.csproj)
@@ -34,6 +36,15 @@ namespace WinIslandSetup
             get
             {
                 return Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
+            }
+        }
+
+        /// <summary>Создатель программы — из &lt;Company&gt; в WinIslandSetup.csproj.</summary>
+        public static string Publisher
+        {
+            get
+            {
+                return Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyCompanyAttribute>()?.Company ?? "";
             }
         }
 
@@ -65,12 +76,20 @@ namespace WinIslandSetup
 
         public static bool HasDesktopLink => File.Exists(DesktopLink);
 
+        /// <summary>Запись есть и Windows её не отключила — то есть программа реально запустится при входе.</summary>
         public static bool AutostartEnabled
         {
             get
             {
                 using (var k = Registry.CurrentUser.OpenSubKey(RunKey))
-                    return k?.GetValue(Name) is string;
+                {
+                    if (!(k?.GetValue(Name) is string cmd) || cmd.Length == 0) return false;
+                }
+                using (var a = Registry.CurrentUser.OpenSubKey(ApprovedKey))
+                {
+                    // первый байт: чётный — включено, нечётный — отключено пользователем
+                    return !(a?.GetValue(Name) is byte[] flag && flag.Length > 0 && (flag[0] & 1) != 0);
+                }
             }
         }
 
@@ -187,6 +206,7 @@ namespace WinIslandSetup
             {
                 k.SetValue("DisplayName", Name);
                 k.SetValue("DisplayVersion", Version);
+                k.SetValue("Publisher", Publisher);
                 k.SetValue("DisplayIcon", exe + ",0");
                 k.SetValue("InstallLocation", dir);
                 k.SetValue("UninstallString", $"\"{uninstaller}\" /uninstall");
@@ -200,12 +220,26 @@ namespace WinIslandSetup
             progress(1, "Готово");
         }
 
+        /// <summary>
+        /// Автозапуск для текущего пользователя: HKCU\...\Run. Заодно снимает флаг «отключено» в StartupApproved
+        /// и проверяет чтением, что запись действительно на месте.
+        /// </summary>
         public static void SetAutostart(bool on)
         {
+            string command = $"\"{ExePath}\"";
             using (var k = Registry.CurrentUser.CreateSubKey(RunKey))
             {
-                if (on) k.SetValue(Name, $"\"{ExePath}\"");
+                if (on) k.SetValue(Name, command, RegistryValueKind.String);
                 else k.DeleteValue(Name, false);
+            }
+            using (var a = Registry.CurrentUser.OpenSubKey(ApprovedKey, true))
+                a?.DeleteValue(Name, false);
+
+            using (var k = Registry.CurrentUser.OpenSubKey(RunKey))
+            {
+                string now = k?.GetValue(Name) as string;
+                if (on ? now != command : now != null)
+                    throw new InstallException("Windows не сохранила запись автозапуска — возможно, её блокирует антивирус.");
             }
         }
 
