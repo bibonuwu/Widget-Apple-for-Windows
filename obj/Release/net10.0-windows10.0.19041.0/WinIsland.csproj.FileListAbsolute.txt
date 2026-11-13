@@ -54,3 +54,37 @@ C:\Users\shakh\Desktop\Widget Apple for Windows\obj\Release\net10.0-windows10.0.
 C:\Users\shakh\Desktop\Widget Apple for Windows\obj\Release\net10.0-windows10.0.19041.0\WinIsland.pdb
 C:\Users\shakh\Desktop\Widget Apple for Windows\obj\Release\net10.0-windows10.0.19041.0\WinIsland.genruntimeconfig.cache
 C:\Users\shakh\Desktop\Widget Apple for Windows\obj\Release\net10.0-windows10.0.19041.0\ref\WinIsland.dll
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\bin\Release\net10.0-windows10.0.19041.0\WinIsland.exe
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\bin\Release\net10.0-windows10.0.19041.0\WinIsland.deps.json
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\bin\Release\net10.0-windows10.0.19041.0\WinIsland.runtimeconfig.json
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\bin\Release\net10.0-windows10.0.19041.0\WinIsland.dll
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\bin\Release\net10.0-windows10.0.19041.0\WinIsland.pdb
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\bin\Release\net10.0-windows10.0.19041.0\System.Management.dll
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\bin\Release\net10.0-windows10.0.19041.0\runtimes\win\lib\net10.0\System.Management.dll
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\bin\Release\net10.0-windows10.0.19041.0\Microsoft.Windows.SDK.NET.dll
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\bin\Release\net10.0-windows10.0.19041.0\WinRT.Runtime.dll
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\obj\Release\net10.0-windows10.0.19041.0\WinIsland.csproj.AssemblyReference.cache
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\obj\Release\net10.0-windows10.0.19041.0\App.baml
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\obj\Release\net10.0-windows10.0.19041.0\MainWindow.g.cs
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\obj\Release\net10.0-windows10.0.19041.0\App.g.cs
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\obj\Release\net10.0-windows10.0.19041.0\GeneratedInternalTypeHelper.g.cs
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\obj\Release\net10.0-windows10.0.19041.0\WinIsland_MarkupCompile.cache
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\obj\Release\net10.0-windows10.0.19041.0\WinIsland_MarkupCompile.lref
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\obj\Release\net10.0-windows10.0.19041.0\MainWindow.baml
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\obj\Release\net10.0-windows10.0.19041.0\WinIsland.g.resources
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\obj\Release\net10.0-windows10.0.19041.0\WinIsland.GeneratedMSBuildEditorConfig.editorconfig
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\obj\Release\net10.0-windows10.0.19041.0\WinIsland.AssemblyInfoInputs.cache
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\obj\Release\net10.0-windows10.0.19041.0\WinIsland.AssemblyInfo.cs
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\obj\Release\net10.0-windows10.0.19041.0\WinIsland.csproj.CoreCompileInputs.cache
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\obj\Release\net10.0-windows10.0.19041.0\WinIsland.sourcelink.json
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\obj\Release\net10.0-windows10.0.19041.0\WinIsland.csproj.Up2Date
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\obj\Release\net10.0-windows10.0.19041.0\WinIsland.dll
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\obj\Release\net10.0-windows10.0.19041.0\refint\WinIsland.dll
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\obj\Release\net10.0-windows10.0.19041.0\WinIsland.pdb
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\obj\Release\net10.0-windows10.0.19041.0\WinIsland.genruntimeconfig.cache
+c:\Users\Abeken_A\Desktop\Code\Widget-Apple-for-Windows\obj\Release\net10.0-windows10.0.19041.0\ref\WinIsland.dll
+C:\Users\Abeken_A\AppData\Local\Temp\claude\d87a9b79d7e81bdb\5426481a-4569-4ab5-a3fb-53d573829bd6\scratchpad\buildcheck\WinIsland.exe
+C:\Users\Abeken_A\AppData\Local\Temp\claude\d87a9b79d7e81bdb\5426481a-4569-4ab5-a3fb-53d573829bd6\scratchpad\buildcheck\WinIsland.deps.json
+C:\Users\Abeken_A\AppData\Local\Temp\claude\d87a9b79d7e81bdb\5426481a-4569-4ab5-a3fb-53d573829bd6\scratchpad\buildcheck\WinIsland.runtimeconfig.json
+C:\Users\Abeken_A\AppData\Local\Temp\claude\d87a9b79d7e81bdb\5426481a-4569-4ab5-a3fb-53d573829bd6\scratchpad\buildcheck\WinIsland.dll
+C:\Users\Abeken_A\AppData\Local\Temp\claude\d87a9b79d7e81bdb\5426481a-4569-4ab5-a3fb-53d573829bd6\scratchpad\buildcheck\WinIsland.pdb

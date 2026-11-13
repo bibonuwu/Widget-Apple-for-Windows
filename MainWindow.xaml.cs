@@ -55,6 +55,7 @@ namespace WinIsland
         bool _revealed = true, _dwellBlocked;
         long _nearSince, _leaveSince, _overSince, _outSince;
         const int DwellOpenMs = 2000; // столько держать курсор на острове, чтобы открылся большой виджет
+        const double HandlePad = 3;   // запас вокруг полоски-ручки (DIP), чтобы в неё было легко попасть
 
         readonly string _snapshotDir;
         IslandState _state = IslandState.Collapsed;
@@ -489,11 +490,24 @@ namespace WinIsland
             var dpi = VisualTreeHelper.GetDpi(this);
             double sx = dpi.DpiScaleX, sy = dpi.DpiScaleY;
             double cx = (wr.Left + wr.Right) / 2.0;
-            double halfW = Island.ActualWidth * sx / 2;
             double bottom = wr.Top + (6 + Island.ActualHeight) * sy;
-            double pad = (_revealed ? 8 : 0) * sx;   // запас, чтобы не мигало на границе
-            bool over = pt.X >= cx - halfW - pad && pt.X <= cx + halfW + pad &&
-                        pt.Y >= wr.Top && pt.Y <= bottom + pad;
+            bool over;
+            if (_revealed)
+            {
+                // остров на виду — держим, пока курсор над ним (с запасом, чтобы не мигало на границе)
+                double halfW = Island.ActualWidth * sx / 2, pad = 8 * sx;
+                over = pt.X >= cx - halfW - pad && pt.X <= cx + halfW + pad &&
+                       pt.Y >= wr.Top && pt.Y <= bottom + pad;
+            }
+            else
+            {
+                // остров спрятан — выезжает, только если навести курсор прямо на полоску-ручку,
+                // а не просто к верху экрана (там вкладки браузера)
+                double halfW = (GhostHandle.ActualWidth / 2 + HandlePad) * sx;
+                double handleBottom = wr.Top + (GhostHandle.Margin.Top + GhostHandle.ActualHeight + HandlePad) * sy;
+                over = pt.X >= cx - halfW && pt.X <= cx + halfW &&
+                       pt.Y >= wr.Top && pt.Y <= handleBottom;
+            }
 
             // курсор далеко — проверяем реже, рядом — чаще (быстрая реакция, почти ноль нагрузки)
             var iv = TimeSpan.FromMilliseconds(pt.Y > bottom + 150 * sy ? 150 : 40);
@@ -908,9 +922,16 @@ namespace WinIsland
         void CheckFullscreen()
         {
             bool fs = Native.IsForegroundFullscreen(_hwnd);
-            if (fs == _hiddenFs) return;
-            _hiddenFs = fs;
-            ApplyHidden();
+            if (fs != _hiddenFs)
+            {
+                _hiddenFs = fs;
+                ApplyHidden();
+            }
+
+            // Windows или другая программа иногда роняет окно из слоя «поверх всех». Остров сам фокус
+            // не берёт, поэтому без этой проверки он так и остаётся под окнами, на рабочем столе.
+            if (!_hiddenFs && !_hiddenUser && IsVisible && Native.IsBuried(_hwnd))
+                Native.BringToTopmost(_hwnd);
         }
 
         public void SetUserHidden(bool hidden)
@@ -933,6 +954,7 @@ namespace WinIsland
             else
             {
                 if (!IsVisible) Show();
+                Native.BringToTopmost(_hwnd); // пока был спрятан (игра, видео), его могли опустить вниз
                 Stage.IsHitTestVisible = true;
                 Anim.To(Stage, OpacityProperty, 1, 280, Anim.OutCubic);
             }

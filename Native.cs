@@ -11,6 +11,50 @@ namespace WinIsland
         public const int WS_EX_APPWINDOW = 0x00040000;
         public const int WS_EX_NOACTIVATE = 0x08000000;
         public const int WS_EX_TRANSPARENT = 0x00000020;
+        const int WS_EX_TOPMOST = 0x00000008;
+        const uint GW_HWNDPREV = 3;
+        const int DWMWA_CLOAKED = 14;
+        static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
+        const uint SWP_NOSIZE = 0x0001, SWP_NOMOVE = 0x0002, SWP_NOACTIVATE = 0x0010, SWP_NOOWNERZORDER = 0x0200;
+
+        [DllImport("user32.dll")] [return: MarshalAs(UnmanagedType.Bool)] static extern bool SetWindowPos(IntPtr hWnd, IntPtr after, int x, int y, int cx, int cy, uint flags);
+        [DllImport("user32.dll")] static extern IntPtr GetWindow(IntPtr hWnd, uint cmd);
+        [DllImport("user32.dll")] [return: MarshalAs(UnmanagedType.Bool)] static extern bool IsWindowVisible(IntPtr hWnd);
+        [DllImport("dwmapi.dll")] static extern int DwmGetWindowAttribute(IntPtr hWnd, int attr, out int value, int size);
+
+        /// <summary>
+        /// Поднять окно наверх слоя «поверх всех», не забирая фокус.
+        /// Работает и когда флаг WS_EX_TOPMOST у окна остался, а само оно уже провалилось под обычные окна.
+        /// </summary>
+        public static void BringToTopmost(IntPtr hWnd)
+        {
+            if (hWnd == IntPtr.Zero) return;
+            SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_NOOWNERZORDER);
+        }
+
+        /// <summary>
+        /// true — окно оказалось под обычным (не «поверх всех») видимым окном.
+        /// Смотрим реальный Z-порядок, а не флаг: Windows иногда оставляет WS_EX_TOPMOST,
+        /// хотя окно уже стоит среди обычных окон.
+        /// </summary>
+        public static bool IsBuried(IntPtr self)
+        {
+            if (self == IntPtr.Zero) return false;
+            int guard = 0;
+            for (IntPtr h = GetWindow(self, GW_HWNDPREV); h != IntPtr.Zero && guard++ < 1024; h = GetWindow(h, GW_HWNDPREV))
+            {
+                if ((GetWindowLong(h, GWL_EXSTYLE) & WS_EX_TOPMOST) != 0 || !IsWindowVisible(h)) continue;
+                if (DwmGetWindowAttribute(h, DWMWA_CLOAKED, out int cloaked, sizeof(int)) == 0 && cloaked != 0) continue;
+                switch (ClassName(h))
+                {
+                    case "Windows.UI.Core.CoreWindow":       // меню «Пуск», поиск — живут в слое выше, их не перекрыть
+                    case "XamlExplorerHostIslandWindow":     // Alt+Tab, представление задач
+                        continue;
+                }
+                return true;
+            }
+            return false;
+        }
 
         [StructLayout(LayoutKind.Sequential)]
         public struct POINT { public int X, Y; }
